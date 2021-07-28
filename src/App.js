@@ -1,15 +1,18 @@
 import React from "react";
 import Header from "./Header";
+import GymMateCards from "./GymMateCards";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 
 function App() {
   return (
     <div className="App">
+      <Header />
       <Router>
-        <Header />
         <Switch>
-          <Route path="/"></Route>
+          <Route path="/">
+            <GymMateCards />
+          </Route>
         </Switch>
       </Router>
     </div>
