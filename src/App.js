@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "./Header";
 import GymMateCards from "./GymMateCards";
+import SwipeButtons from "./SwipeButtons";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 
@@ -10,8 +11,12 @@ function App() {
       <Header />
       <Router>
         <Switch>
+          <Route path="/chat">
+            <h1> CHAT PAGE</h1>
+          </Route>
           <Route path="/">
             <GymMateCards />
+            <SwipeButtons />
           </Route>
         </Switch>
       </Router>
