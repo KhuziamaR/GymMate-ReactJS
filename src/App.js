@@ -8,13 +8,14 @@ import "./App.css";
 function App() {
   return (
     <div className="App">
-      <Header />
       <Router>
         <Switch>
           <Route path="/chat">
-            <h1> CHAT PAGE</h1>
+            <Header backButton="/" />
+            <h1>CHAT</h1>
           </Route>
           <Route path="/">
+            <Header />
             <GymMateCards />
             <SwipeButtons />
           </Route>
