@@ -4,7 +4,7 @@ import GymMateCards from "./GymMateCards";
 import SwipeButtons from "./SwipeButtons";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
-
+import Chats from "./Chats";
 function App() {
   return (
     <div className="App">
@@ -12,7 +12,7 @@ function App() {
         <Switch>
           <Route path="/chat">
             <Header backButton="/" />
-            <h1>CHAT</h1>
+            <Chats />
           </Route>
           <Route path="/">
             <Header />
