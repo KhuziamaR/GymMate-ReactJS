@@ -1,14 +1,15 @@
 import React, { useState } from "react";
+
 import Header from "./components/Header/Header";
 import GymMateCards from "./components/Cards/GymMateCards";
-import SwipeButtons from "./SwipeButtons";
+import SwipeButtons from "./components/SwipeButtons/SwipeButtons";
 import ChatScreen from "./components/Chat/ChatScreen";
-import Login from "./Login";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import "./App.css";
+import Login from "./components/Login/Login";
+import MyProfile from "./components/MyProfile/MyProfile";
 import Chats from "./components/Chat/Chats";
+
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { useStateValue } from "./StateProvider";
-import MyProfile from "./MyProfile";
 
 function App() {
   const [{ user }, dispatch] = useStateValue();

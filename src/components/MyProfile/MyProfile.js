@@ -1,10 +1,10 @@
 import React from "react";
-import { useStateValue } from "./StateProvider";
+import { useStateValue } from "../../StateProvider";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import { makeStyles } from "@material-ui/core/styles";
-
+import "./MyProfile.css";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 300,
