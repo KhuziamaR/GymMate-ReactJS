@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 import Chats from "./Chats";
 import { useStateValue } from "./StateProvider";
+import MyProfile from "./MyProfile";
 
 function App() {
   const [{ user }, dispatch] = useStateValue();
@@ -19,6 +20,10 @@ function App() {
       ) : (
         <Router>
           <Switch>
+            <Route path="/myprofile">
+              <Header backButton="/" />
+              <MyProfile />
+            </Route>
             <Route path="/chat/:person">
               <Header backButton="/chat" />
               <ChatScreen />
