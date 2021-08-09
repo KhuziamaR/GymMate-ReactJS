@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import Header from "./Header";
-import GymMateCards from "./GymMateCards";
+import Header from "./components/Header/Header";
+import GymMateCards from "./components/Cards/GymMateCards";
 import SwipeButtons from "./SwipeButtons";
-import ChatScreen from "./ChatScreen";
+import ChatScreen from "./components/Chat/ChatScreen";
 import Login from "./Login";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
-import Chats from "./Chats";
+import Chats from "./components/Chat/Chats";
 import { useStateValue } from "./StateProvider";
 import MyProfile from "./MyProfile";
 
