@@ -1,37 +1,42 @@
 import React from "react";
-import { useStateValue } from "../../StateProvider";
+
 import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
-import Slider from "@material-ui/core/Slider";
+import { Box } from "@material-ui/core";
+import { useStateValue } from "../../StateProvider";
 import { makeStyles } from "@material-ui/core/styles";
+import NewUser from "../NewUser/NewUser";
 import "./MyProfile.css";
+
 const useStyles = makeStyles((theme) => ({
-  root: {
-    width: 300,
-  },
   large: {
     width: theme.spacing(12),
     height: theme.spacing(12),
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 }));
-
-function valuetext(value) {
-  return `${value}°C`;
-}
 
 function MyProfile() {
   const classes = useStyles();
   const [{ user }, dispatch] = useStateValue();
-  return (
-    <div>
-      <h1>My Profile</h1>
-      <Avatar
-        alt={user.displayName}
-        src={user.photoURL}
-        className={classes.large}
-      />
 
-      <h2>Welcome, {user.displayName}</h2>
+  return (
+    <div className="myProfile__outterContainer">
+      <div className="myProfile__innerContainer">
+        <div className="myProfile__header">
+          <h2>My Profile</h2>
+          <Avatar
+            alt={user.displayName}
+            src={user.photoURL}
+            className={classes.large}
+          />
+          <h2>Welcome, {user.displayName}</h2>
+        </div>
+        <div>
+          <NewUser />
+        </div>
+      </div>
     </div>
   );
 }

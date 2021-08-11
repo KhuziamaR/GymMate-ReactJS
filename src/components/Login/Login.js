@@ -4,7 +4,7 @@ import "./Login.css";
 import logo from "../../assets/logo.png";
 import { actionTypes } from "../../reducer";
 import { useStateValue } from "../../StateProvider";
-
+import firebase from "firebase";
 function Login() {
   const [{}, dispatch] = useStateValue();
 
