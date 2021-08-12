@@ -21,20 +21,35 @@ function Login() {
           type: actionTypes.SET_USER,
           user: result.user,
         });
-        console.log(result.user);
+        // console.log(result.user);
         const fullName = result.user.displayName.split(" ");
-        database
-          .collection("people")
-          .doc(result.user.uid)
-          .set({
-            firstName: fullName[0],
-            lastName: fullName[1],
-            age: "notSet",
-            location: {
-              lat: lat,
-              long: long,
-            },
-            uid: result.user.uid,
+        var docRef = database.collection("people").doc(result.user.uid);
+
+        docRef
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              console.log("Document Data: ", doc.data());
+            } else {
+              database
+                .collection("people")
+                .doc(result.user.uid)
+                .set({
+                  firstName: fullName[0],
+                  lastName: fullName[1],
+                  age: "notSet",
+                  location: {
+                    lat: lat,
+                    long: long,
+                  },
+                  uid: result.user.uid,
+                  profileImgUrl: result.user.photoURL,
+                  newUser: false,
+                });
+            }
+          })
+          .catch((error) => {
+            console.log("Error getting document:", error);
           });
       })
       .catch((error) => alert(error.message));

@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from "react";
-import firebase from "firebase";
+import React, { useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
-import { Box, colors } from "@material-ui/core";
 import { useStateValue } from "../../StateProvider";
 import { makeStyles } from "@material-ui/core/styles";
-import NewUser from "../EditProfile/EditProfile";
 import "./MyProfile.css";
 import EditProfile from "../EditProfile/EditProfile";
 
@@ -34,11 +31,9 @@ function MyProfile() {
             src={user.photoURL}
             className={classes.large}
           />
-          <h2>Welcome, {user.firstName}</h2>
+          <h2>Welcome, {user.displayName}</h2>
         </div>
-        <div>
-          <EditProfile />
-        </div>
+        <div></div>
       </div>
     </div>
   );
