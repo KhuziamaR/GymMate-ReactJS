@@ -16,9 +16,9 @@ import { provider } from "../../firebase";
 import { actionTypes } from "../../reducer";
 import { emphasize, makeStyles } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import logo from "../../assets/logo.png";
+// import logo from "../../assets/logo.png";
 import "./Registration.css";
-import { func } from "prop-types";
+// import { func } from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,37 +53,9 @@ function Registration() {
   const [file, setFile] = useState(null);
 
   const handleUploadClick = (event) => {
-    console.log(file);
     setFile(event.target.files[0]);
     console.log(file);
   };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   // console.log(firstName, lastName, email, password);
-  //   if (firstName && lastName && age && lat && long) {
-  //     database
-  //       .collection("people")
-  //       .doc(user.uid)
-  //       .set({
-  //         firstName: firstName,
-  //         lastName: lastName,
-  //         age: age,
-  //         location: {
-  //           lat: lat,
-  //           long: long,
-  //         },
-  //       })
-  //       .then(() => {
-  //         console.log("Document successfully written!");
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error writing document: ", error);
-  //       });
-  //   } else {
-  //     alert("invalid input fields");
-  //   }
-  // };
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (position) {
@@ -96,6 +68,7 @@ function Registration() {
 
   const signUp = (e) => {
     e.preventDefault();
+
     console.log("signup");
     firebase
       .auth()
@@ -107,7 +80,7 @@ function Registration() {
         });
         firebase
           .storage()
-          .ref("users/" + auth.user.uid + "/profilejpg")
+          .ref("users/" + auth.user.uid + "/profile.jpg")
           .put(file)
           .then(function () {
             console.log("successfully uploaded image");
@@ -126,6 +99,7 @@ function Registration() {
               lat: lat,
               long: long,
             },
+            uid: auth.user.uid,
           })
           .then(() => {
             console.log("Document successfully written!");
@@ -133,16 +107,6 @@ function Registration() {
           .catch((error) => {
             console.error("Error writing document: ", error);
           });
-        // firebase
-        //   .storage()
-        //   .ref("users/" + auth.user.uid + "/profile.jpg")
-        //   .put(file)
-        //   .then(function () {
-        //     console.log("successfully uploaded");
-        //   })
-        //   .catch((error) => {
-        //     console.log(error.message);
-        //   });
       });
   };
   const signInGoogle = () => {
@@ -207,12 +171,14 @@ function Registration() {
               multiple
               type="file"
               onChange={handleUploadClick}
+              required
             />
             <label htmlFor="contained-button-file">
               <Fab component="span" className={classes.button}>
                 <AddPhotoAlternateIcon />
               </Fab>
             </label>
+
             {file ? <h4>{file.name}</h4> : <br></br>}
           </CardContent>
 

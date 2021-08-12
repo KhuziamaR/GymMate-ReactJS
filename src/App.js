@@ -11,6 +11,7 @@ import NewUser from "./components/NewUser/NewUser";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { useStateValue } from "./StateProvider";
 import Registration from "./components/signUp/Registration";
+import SignInWithGymMate from "./components/SignIn/SignInWithGymMate";
 
 function App() {
   const [{ user }, dispatch] = useStateValue();
@@ -20,6 +21,9 @@ function App() {
       {!user ? (
         <Router>
           <Switch>
+            <Route path="/signin">
+              <SignInWithGymMate />
+            </Route>
             <Route path="/signup">
               <Registration />
             </Route>

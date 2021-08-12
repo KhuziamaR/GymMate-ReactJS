@@ -1,5 +1,5 @@
-import React from "react";
-
+import React, { useState, useEffect } from "react";
+import firebase from "firebase";
 import Avatar from "@material-ui/core/Avatar";
 import { Box } from "@material-ui/core";
 import { useStateValue } from "../../StateProvider";
@@ -20,6 +20,21 @@ const useStyles = makeStyles((theme) => ({
 function MyProfile() {
   const classes = useStyles();
   const [{ user }, dispatch] = useStateValue();
+  const [profileImageUrl, setProfileImageUrl] = useState();
+
+  useEffect(() => {
+    const unsubscribe = firebase
+      .storage()
+      .ref("users/" + user.uid + "/profile.jpg")
+      .getDownloadURL()
+      .then((imgUrl) => {
+        console.log(imgUrl);
+        setProfileImageUrl(imgUrl);
+      });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   return (
     <div className="myProfile__outterContainer">
@@ -28,7 +43,7 @@ function MyProfile() {
           <h2>My Profile</h2>
           <Avatar
             alt={user.displayName}
-            src={user.photoURL}
+            src={profileImageUrl}
             className={classes.large}
           />
           <h2>Welcome, {user.displayName}</h2>

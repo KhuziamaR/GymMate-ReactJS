@@ -4,7 +4,9 @@ import "./GymMateCards.css";
 import database from "../../firebase";
 const GymMateCards = () => {
   const [people, setPeople] = useState([]);
-
+  const [currentPerson, setCurrentPerson] = useState({
+    name: "initialName",
+  });
   useEffect(() => {
     const unsubscribe = database
       .collection("people")
@@ -18,7 +20,7 @@ const GymMateCards = () => {
   }, []);
 
   return (
-    <div>
+    <div key={currentPerson.name}>
       <div className="gymmateCards__cardContainer">
         {people.map((person) => (
           <TinderCard
@@ -31,7 +33,6 @@ const GymMateCards = () => {
               className="card"
             >
               <h3>{person.firstName + " " + person.lastName}</h3>
-              {console.log(person)}
             </div>
           </TinderCard>
         ))}
