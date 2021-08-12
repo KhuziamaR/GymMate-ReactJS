@@ -7,7 +7,7 @@ import ChatScreen from "./components/Chat/ChatScreen";
 import Login from "./components/Login/Login";
 import MyProfile from "./components/MyProfile/MyProfile";
 import Chats from "./components/Chat/Chats";
-import NewUser from "./components/NewUser/NewUser";
+import EditProfile from "./components/EditProfile/EditProfile";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { useStateValue } from "./StateProvider";
 import Registration from "./components/signUp/Registration";

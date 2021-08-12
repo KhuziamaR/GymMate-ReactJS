@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NewUser = () => {
+const EditProfile = () => {
   const [{ user }, dispatch] = useStateValue();
   const classes = useStyles();
   // create state variables for each input
@@ -111,4 +111,4 @@ const NewUser = () => {
     </form>
   );
 };
-export default NewUser;
+export default EditProfile;

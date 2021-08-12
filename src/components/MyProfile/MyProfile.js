@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import firebase from "firebase";
 import Avatar from "@material-ui/core/Avatar";
-import { Box } from "@material-ui/core";
+import { Box, colors } from "@material-ui/core";
 import { useStateValue } from "../../StateProvider";
 import { makeStyles } from "@material-ui/core/styles";
-import NewUser from "../NewUser/NewUser";
+import NewUser from "../EditProfile/EditProfile";
 import "./MyProfile.css";
+import EditProfile from "../EditProfile/EditProfile";
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -20,22 +21,9 @@ const useStyles = makeStyles((theme) => ({
 function MyProfile() {
   const classes = useStyles();
   const [{ user }, dispatch] = useStateValue();
-  const [profileImageUrl, setProfileImageUrl] = useState();
-
   useEffect(() => {
-    const unsubscribe = firebase
-      .storage()
-      .ref("users/" + user.uid + "/profile.jpg")
-      .getDownloadURL()
-      .then((imgUrl) => {
-        console.log(imgUrl);
-        setProfileImageUrl(imgUrl);
-      });
-    return () => {
-      unsubscribe();
-    };
+    console.log(user);
   }, []);
-
   return (
     <div className="myProfile__outterContainer">
       <div className="myProfile__innerContainer">
@@ -43,13 +31,13 @@ function MyProfile() {
           <h2>My Profile</h2>
           <Avatar
             alt={user.displayName}
-            src={profileImageUrl}
+            src={user.photoURL}
             className={classes.large}
           />
-          <h2>Welcome, {user.displayName}</h2>
+          <h2>Welcome, {user.firstName}</h2>
         </div>
         <div>
-          <NewUser />
+          <EditProfile />
         </div>
       </div>
     </div>

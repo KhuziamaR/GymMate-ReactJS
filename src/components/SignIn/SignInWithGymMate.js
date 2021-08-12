@@ -58,8 +58,6 @@ function SignInWithGymMate() {
         });
       })
       .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
         alert("Incorrect Username And/or Password");
       });
   };

@@ -5,20 +5,16 @@ import Button from "@material-ui/core/Button";
 import { useStateValue } from "../../StateProvider";
 import firebase from "firebase";
 import database from "../../firebase";
-import SaveIcon from "@material-ui/icons/Save";
 import Box from "@material-ui/core/Box";
 import CardContent from "@material-ui/core/CardContent";
 import Fab from "@material-ui/core/Fab";
 import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
 
-import { auth } from "../../firebase";
-import { provider } from "../../firebase";
 import { actionTypes } from "../../reducer";
-import { emphasize, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import { Link } from "react-router-dom";
 // import logo from "../../assets/logo.png";
 import "./Registration.css";
-// import { func } from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,6 +47,7 @@ function Registration() {
   const [lat, setLat] = useState(null);
   const [long, setLong] = useState(null);
   const [file, setFile] = useState(null);
+  const [profileImgUrl, setProfileImgUrl] = useState("");
 
   const handleUploadClick = (event) => {
     setFile(event.target.files[0]);
@@ -84,43 +81,60 @@ function Registration() {
           .put(file)
           .then(function () {
             console.log("successfully uploaded image");
+            firebase
+              .storage()
+              .ref("users/" + auth.user.uid + "/profile.jpg")
+              .getDownloadURL()
+              .then((imgUrl) => {
+                console.log("downloaded image url");
+                console.log(imgUrl);
+                setProfileImgUrl(imgUrl);
+                const user = firebase.auth().currentUser;
+                user
+                  .updateProfile({
+                    photoURL: imgUrl,
+                    firstName: firstName,
+                    lastName: lastName,
+                    fullName: firstName + " " + lastName,
+                    displayName: firstName + " " + lastName,
+                    email: email,
+                    age: age,
+                  })
+                  .then(() => {
+                    console.log("Successfully updated profile image url");
+                    database
+                      .collection("people")
+                      .doc(auth.user.uid)
+                      .set({
+                        firstName: firstName,
+                        lastName: lastName,
+                        fullName: firstName + " " + lastName,
+                        age: age,
+                        location: {
+                          lat: lat,
+                          long: long,
+                        },
+                        uid: auth.user.uid,
+                        profileImgUrl: imgUrl,
+                      })
+                      .then(() => {
+                        console.log("Document successfully written!");
+                      })
+                      .catch((error) => {
+                        console.error("Error writing document: ", error);
+                      });
+                  })
+                  .catch((error) => {
+                    console.log("Cannot update profile image url");
+                  });
+              });
           })
           .catch((error) => {
             console.log(error.message);
           });
-        database
-          .collection("people")
-          .doc(auth.user.uid)
-          .set({
-            firstName: firstName,
-            lastName: lastName,
-            age: age,
-            location: {
-              lat: lat,
-              long: long,
-            },
-            uid: auth.user.uid,
-          })
-          .then(() => {
-            console.log("Document successfully written!");
-          })
-          .catch((error) => {
-            console.error("Error writing document: ", error);
-          });
       });
   };
-  const signInGoogle = () => {
-    auth
-      .signInWithPopup(provider)
-      .then((result) => {
-        dispatch({
-          type: actionTypes.SET_USER,
-          user: result.user,
-        });
-      })
-      .catch((error) => alert(error.message));
-  };
-  const signInWithGymMate = () => {};
+
   return (
     <div className="register__outterContainer">
       <div className="register__innerContainer">
