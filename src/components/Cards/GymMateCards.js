@@ -15,7 +15,7 @@ const GymMateCards = () => {
       // cleanup
       unsubscribe();
     };
-  }, [people]);
+  }, []);
 
   return (
     <div>
@@ -30,7 +30,8 @@ const GymMateCards = () => {
               style={{ backgroundImage: `url(${person.url})` }}
               className="card"
             >
-              <h3>{person.name}</h3>
+              <h3>{person.firstName + " " + person.lastName}</h3>
+              {console.log(person)}
             </div>
           </TinderCard>
         ))}

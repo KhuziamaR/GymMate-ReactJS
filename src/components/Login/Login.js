@@ -5,8 +5,12 @@ import logo from "../../assets/logo.png";
 import { actionTypes } from "../../reducer";
 import { useStateValue } from "../../StateProvider";
 import firebase from "firebase";
+import { Link, useHistory } from "react-router-dom";
+
 function Login() {
   const [{}, dispatch] = useStateValue();
+
+  const signInWithGymMate = () => {};
 
   const signInGoogle = () => {
     auth
@@ -24,8 +28,13 @@ function Login() {
     <div className="login">
       <div className="login__container">
         <img src={logo} alt="Gym Mate Logo" />
+
         <div className="login__text">
           <h1>Sign in to Gym Mate</h1>
+        </div>
+        <div className="login__withGoogle" onClick={signInWithGymMate}>
+          <img src={logo} alt="GymMate Logo" />
+          <span>Sign In with Gym Mate</span>
         </div>
 
         <div className="login__withGoogle" onClick={signInGoogle}>
@@ -33,8 +42,13 @@ function Login() {
             src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png"
             alt="Google Logo"
           />
-          <span>Sign in with Google</span>
+          <span>Sign In with Google</span>
         </div>
+        <Link to="/signup">
+          <div className="login__withGoogle">
+            <div>Dont have an Account? Sign Up Here.</div>
+          </div>
+        </Link>
       </div>
     </div>
   );

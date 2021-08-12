@@ -10,6 +10,7 @@ import Chats from "./components/Chat/Chats";
 import NewUser from "./components/NewUser/NewUser";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { useStateValue } from "./StateProvider";
+import Registration from "./components/signUp/Registration";
 
 function App() {
   const [{ user }, dispatch] = useStateValue();
@@ -17,7 +18,16 @@ function App() {
   return (
     <div className="App">
       {!user ? (
-        <Login />
+        <Router>
+          <Switch>
+            <Route path="/signup">
+              <Registration />
+            </Route>
+            <Route path="/">
+              <Login />
+            </Route>
+          </Switch>
+        </Router>
       ) : (
         <Router>
           <Switch>
@@ -32,6 +42,9 @@ function App() {
             <Route path="/chat">
               <Header backButton="/" />
               <Chats />
+            </Route>
+            <Route path="signup">
+              <Registration />
             </Route>
             <Route path="/">
               <Header />
