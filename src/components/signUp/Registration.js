@@ -18,6 +18,17 @@ import "./Registration.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    "&$focused $notchedOutline": {
+      borderColor: "#e75480",
+    },
+    "&:hover $notchedOutline": {
+      borderColor: "#e75480",
+    },
+    "&$disabled $notchedOutline": {
+      borderColor: "#e75480",
+    },
+  },
+  root2: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -31,6 +42,10 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(2),
     },
   },
+  focused: {},
+  disabled: {},
+  notchedOutline: {},
+
   input: {
     display: "none",
   },
@@ -138,9 +153,9 @@ function Registration() {
   return (
     <div className="register__outterContainer">
       <div className="register__innerContainer">
-        <form className={classes.root} onSubmit={signUp}>
+        <form className={classes.root2} onSubmit={signUp}>
           <Box m={4} pb={5}>
-            <h1>Sign Up</h1>
+            <h1 className="register__header">Sign Up</h1>
           </Box>
           <TextField
             onChange={(e) => {
@@ -148,18 +163,48 @@ function Registration() {
             }}
             label="First Name"
             variant="outlined"
+            InputProps={{
+              classes: {
+                root: classes.root,
+                focused: classes.focused,
+                notchedOutline: classes.notchedOutline,
+              },
+            }}
+            InputLabelProps={{
+              style: { color: "#e75480" },
+            }}
             required
           />
           <TextField
             onChange={(e) => setLastName(e.target.value)}
             label="Last Name"
             variant="outlined"
+            InputProps={{
+              classes: {
+                root: classes.root,
+                focused: classes.focused,
+                notchedOutline: classes.notchedOutline,
+              },
+            }}
+            InputLabelProps={{
+              style: { color: "#e75480" },
+            }}
             required
           />
           <TextField
             onChange={(e) => setAge(e.target.value)}
             label="Age"
             variant="outlined"
+            InputProps={{
+              classes: {
+                root: classes.root,
+                focused: classes.focused,
+                notchedOutline: classes.notchedOutline,
+              },
+            }}
+            InputLabelProps={{
+              style: { color: "#e75480" },
+            }}
             required
           />
           <TextField
@@ -167,6 +212,16 @@ function Registration() {
             label="Email"
             variant="outlined"
             type="email"
+            InputProps={{
+              classes: {
+                root: classes.root,
+                focused: classes.focused,
+                notchedOutline: classes.notchedOutline,
+              },
+            }}
+            InputLabelProps={{
+              style: { color: "#e75480" },
+            }}
             required
           />
           <TextField
@@ -174,9 +229,19 @@ function Registration() {
             variant="outlined"
             type="password"
             onChange={(e) => setPass(e.target.value)}
+            InputProps={{
+              classes: {
+                root: classes.root,
+                focused: classes.focused,
+                notchedOutline: classes.notchedOutline,
+              },
+            }}
+            InputLabelProps={{
+              style: { color: "#e75480" },
+            }}
             required
           />
-          <h3>Select Profile Image</h3>
+          <h3 className="register__header">Select Profile Image</h3>
           <CardContent>
             <input
               accept="image/*"
@@ -188,12 +253,19 @@ function Registration() {
               required
             />
             <label htmlFor="contained-button-file">
-              <Fab component="span" className={classes.button}>
+              <Fab
+                component="span"
+                className={classes.button}
+                variant="extended"
+              >
                 <AddPhotoAlternateIcon />
+                {file ? (
+                  <h4>{"Profile Image: " + file.name}</h4>
+                ) : (
+                  <h4>Select Profile Image</h4>
+                )}
               </Fab>
             </label>
-
-            {file ? <h4>{file.name}</h4> : <br></br>}
           </CardContent>
 
           <div>

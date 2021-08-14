@@ -20,6 +20,17 @@ import "./SignInWithGymMate.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    "&$focused $notchedOutline": {
+      borderColor: "#e75480",
+    },
+    "&:hover $notchedOutline": {
+      borderColor: "#e75480",
+    },
+    "&$disabled $notchedOutline": {
+      borderColor: "#e75480",
+    },
+  },
+  root2: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -33,6 +44,10 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(2),
     },
   },
+  focused: {},
+  disabled: {},
+  notchedOutline: {},
+
   input: {
     display: "none",
   },
@@ -66,9 +81,9 @@ function SignInWithGymMate() {
     <div>
       <div className="register__outterContainer">
         <div className="register__innerContainer">
-          <form className={classes.root} onSubmit={signIn}>
+          <form className={classes.root2} onSubmit={signIn}>
             <Box m={4} pb={5}>
-              <h1>Sign In</h1>
+              <h1 className="register__header">Sign In</h1>
             </Box>
 
             <TextField
@@ -76,6 +91,16 @@ function SignInWithGymMate() {
               label="Email"
               variant="outlined"
               type="email"
+              InputProps={{
+                classes: {
+                  root: classes.root,
+                  focused: classes.focused,
+                  notchedOutline: classes.notchedOutline,
+                },
+              }}
+              InputLabelProps={{
+                style: { color: "#e75480" },
+              }}
               required
             />
             <TextField
@@ -83,9 +108,18 @@ function SignInWithGymMate() {
               variant="outlined"
               type="password"
               onChange={(e) => setPass(e.target.value)}
+              InputProps={{
+                classes: {
+                  root: classes.root,
+                  focused: classes.focused,
+                  notchedOutline: classes.notchedOutline,
+                },
+              }}
+              InputLabelProps={{
+                style: { color: "#e75480" },
+              }}
               required
             />
-
             <div>
               <Link to="/">
                 <Button variant="contained">Cancel</Button>

@@ -12,53 +12,60 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { useStateValue } from "./StateProvider";
 import Registration from "./components/signUp/Registration";
 import SignInWithGymMate from "./components/SignIn/SignInWithGymMate";
-
+import "./App.css";
+import { ToastProvider } from "react-toast-notifications";
 function App() {
   const [{ user }, dispatch] = useStateValue();
 
   return (
-    <div className="App">
-      {!user ? (
-        <Router>
-          <Switch>
-            <Route path="/signin">
-              <SignInWithGymMate />
-            </Route>
-            <Route path="/signup">
-              <Registration />
-            </Route>
-            <Route path="/">
-              <Login />
-            </Route>
-          </Switch>
-        </Router>
-      ) : (
-        <Router>
-          <Switch>
-            <Route path="/myprofile">
-              <Header backButton="/" />
-              <MyProfile />
-            </Route>
-            <Route path="/chat/:person">
-              <Header backButton="/chat" />
-              <ChatScreen />
-            </Route>
-            <Route path="/chat">
-              <Header backButton="/" />
-              <Chats />
-            </Route>
-            <Route path="signup">
-              <Registration />
-            </Route>
-            <Route path="/">
-              <Header />
-              <GymMateCards />
-              <SwipeButtons />
-            </Route>
-          </Switch>
-        </Router>
-      )}
-    </div>
+    <ToastProvider>
+      <div className="App">
+        {!user ? (
+          <Router>
+            <Switch>
+              <Route path="/signin">
+                <SignInWithGymMate />
+              </Route>
+              <Route path="/signup">
+                <Registration />
+              </Route>
+              <Route path="/">
+                <Login />
+              </Route>
+            </Switch>
+          </Router>
+        ) : (
+          <Router>
+            <Switch>
+              <Route path="/myprofile/edit">
+                <Header backButton="/myprofile" />
+                <EditProfile />
+              </Route>
+              <Route path="/myprofile">
+                <Header backButton="/" />
+                <MyProfile />
+              </Route>
+              <Route path="/chat/:person">
+                <Header backButton="/chat" />
+                <ChatScreen />
+              </Route>
+              <Route path="/chat">
+                <Header backButton="/" />
+                <Chats />
+              </Route>
+              <Route path="signup">
+                <Registration />
+              </Route>
+              <Route path="/">
+                <Header />
+                <GymMateCards />
+                <SwipeButtons />
+              </Route>
+            </Switch>
+          </Router>
+        )}
+      </div>
+    </ToastProvider>
   );
 }
 
