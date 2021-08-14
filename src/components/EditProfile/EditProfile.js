@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { ToastProvider, useToasts } from "react-toast-notifications";
+import { BrowserRouter } from "react-router-dom";
+import { Redirect } from "react-router";
 import { makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { useStateValue } from "../../StateProvider";
-import Geocode from "react-geocode";
 import firebase from "firebase";
 import database from "../../firebase";
 import CardContent from "@material-ui/core/CardContent";
@@ -13,8 +15,6 @@ import SaveIcon from "@material-ui/icons/Save";
 import { Box } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import "./EditProfile.css";
-
-Geocode.setApiKey("AIzaSyA1EqO90JUwnL9YwiWffzsqB3HxSlXSmik");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,6 +42,48 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(2),
     },
   },
+  selectImg: {
+    paddingTop: "1px",
+    paddingBottom: "1px",
+    marginTop: "1px",
+  },
+  button: {
+    color: "white",
+    backgroundColor: "#e75480",
+    "&:hover": {
+      color: "white",
+      backgroundColor: "#e75480",
+      fontSize: "1rem",
+    },
+  },
+  buttonSave: {
+    background: "#e75480",
+    borderRadius: 3,
+    border: "1px solid #e75480",
+    color: "white",
+    height: 48,
+    fontSize: "1rem",
+    padding: "0 30px",
+    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+    "&:hover": {
+      background: "#e75480",
+      fontSize: "1.2rem",
+    },
+  },
+  buttonCancel: {
+    background: "white",
+    borderRadius: 3,
+    border: "1px solid #e75480",
+    color: "#e75480",
+    height: 48,
+    fontSize: "1rem",
+    padding: "0 30px",
+    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+    "&:hover": {
+      fontSize: "1.2rem",
+    },
+  },
+
   focused: {},
   disabled: {},
   notchedOutline: {},
@@ -52,14 +94,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const EditProfile = () => {
+  const { addToast } = useToasts();
   const [{ user }, dispatch] = useStateValue();
   const classes = useStyles();
-  // create state variables for each input
   const [userName, setUserName] = useState(null);
   const [bio, setBio] = useState(null);
   const [age, setAge] = useState(null);
-  const [lat, setLat] = useState(null);
-  const [long, setLong] = useState(null);
+  const [zipcode, setZipcode] = useState(null);
   const [selectedProfileImg, setSelectedProfileImg] = useState(null);
   const [selectedCardImg, setSelectedCardImg] = useState(null);
 
@@ -73,75 +114,100 @@ const EditProfile = () => {
     console.log(selectedCardImg);
   };
 
-  const updateProfile = () => {};
+  const updateProfile = (e) => {
+    e.preventDefault();
+    var isValidZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zipcode);
+    if (!isValidZip) {
+      addToast("Invalid Zipcode", { appearance: "error" });
+      return;
+    }
+    firebase
+      .storage()
+      .ref("users/" + user.uid + "/profile.jpg")
+      .put(selectedProfileImg)
+      .then(function () {
+        console.log("successfully uploaded profile image");
+        firebase
+          .storage()
+          .ref("users/" + user.uid + "/card.jpg")
+          .put(selectedCardImg)
+          .then(function () {
+            console.log("successfully uploaded card image");
+            firebase
+              .storage()
+              .ref("users/" + user.uid + "/profile.jpg")
+              .getDownloadURL()
+              .then((profileImgUrl) => {
+                console.log("downloaded profile image url");
+                console.log(profileImgUrl);
+                firebase
+                  .storage()
+                  .ref("users/" + user.uid + "/card.jpg")
+                  .getDownloadURL()
+                  .then((cardImgUrl) => {
+                    console.log("downloaded card image url");
+                    console.log(cardImgUrl);
 
-  const getPosition = function (options) {
-    return new Promise(function (resolve, reject) {
-      navigator.geolocation.getCurrentPosition(resolve, reject, options);
-    });
-  };
-
-  useEffect(() => {
-    getPosition()
-      .then((position) => {
-        setLat(position.coords.latitude);
-        setLong(position.coords.longitude);
-        Geocode.fromLatLng(
-          position.coords.latitude,
-          position.coords.longitude
-        ).then(
-          (response) => {
-            const address = response.results[0].formatted_address;
-            let city, state, country;
-            for (
-              let i = 0;
-              i < response.results[0].address_components.length;
-              i++
-            ) {
-              for (
-                let j = 0;
-                j < response.results[0].address_components[i].types.length;
-                j++
-              ) {
-                switch (response.results[0].address_components[i].types[j]) {
-                  case "locality":
-                    city = response.results[0].address_components[i].long_name;
-                    break;
-                  case "administrative_area_level_1":
-                    state = response.results[0].address_components[i].long_name;
-                    break;
-                  case "country":
-                    country =
-                      response.results[0].address_components[i].long_name;
-                    break;
-                }
-              }
-            }
-            console.log(city, state, country);
-            console.log(address);
-          },
-          (error) => {
-            console.error(error);
-          }
-        );
-      })
-      .catch((err) => {
-        console.error(err.message);
+                    user
+                      .updateProfile({
+                        photoURL: profileImgUrl,
+                        displayName: userName,
+                      })
+                      .then(() => {
+                        console.log("Successfully updated profile image url");
+                        console.log(user);
+                        database
+                          .collection("people")
+                          .doc(user.uid)
+                          .set({
+                            username: userName,
+                            age: age,
+                            profileImgUrl: profileImgUrl,
+                            cardImgUrl: cardImgUrl,
+                          })
+                          .then(() => {
+                            addToast("Profile Updated Successfully", {
+                              appearance: "success",
+                            });
+                            <Redirect to="/myprofile" />;
+                          })
+                          .catch((error) => {
+                            addToast(error.message, { appearance: "error" });
+                          });
+                      })
+                      .catch((error) => {
+                        addToast(error.message, { appearance: "error" });
+                      });
+                  });
+              });
+          });
       });
-  }, []);
+  };
+  const checkImg = () => {
+    if (!selectedCardImg && !selectedProfileImg) {
+      addToast("Please select Profile and Card Images", {
+        appearance: "error",
+      });
+    } else if (!selectedCardImg) {
+      addToast("Please select Card Image", { appearance: "error" });
+    } else if (!selectedProfileImg) {
+      addToast("Please select Profile Image", { appearance: "error" });
+    }
+  };
 
   return (
     <div>
       <div className="edit__outterContainer">
         <div className="edit__innerContainer">
           <form className={classes.root2} onSubmit={updateProfile}>
-            <Box m={4} pb={5}>
+            <Box m={2} pb={1}>
               <h1 className="edit__header">Edit Profile</h1>
             </Box>
             <TextField
               onChange={(e) => setUserName(e.target.value)}
               label="User Name"
               variant="outlined"
+              inputProps={{ maxLength: 20, minLength: 5 }}
               InputProps={{
                 classes: {
                   root: classes.root,
@@ -159,8 +225,30 @@ const EditProfile = () => {
               label="Bio"
               variant="outlined"
               multiline
+              inputProps={{ maxLength: 400, minLength: 30 }}
               InputProps={{
-                maxLength: 12,
+                classes: {
+                  root: classes.root,
+                  focused: classes.focused,
+                  notchedOutline: classes.notchedOutline,
+                },
+              }}
+              InputLabelProps={{
+                style: { color: "#e75480" },
+              }}
+              required
+            />
+
+            <TextField
+              label="Age"
+              variant="outlined"
+              type={"number"}
+              onChange={(e) => {
+                e.target.value < 0
+                  ? (e.target.value = 0)
+                  : setAge(e.target.value);
+              }}
+              InputProps={{
                 classes: {
                   root: classes.root,
                   focused: classes.focused,
@@ -173,9 +261,14 @@ const EditProfile = () => {
               required
             />
             <TextField
-              label="Age"
+              label="ZipCode"
               variant="outlined"
-              onChange={(e) => setAge(e.target.value)}
+              type={"number"}
+              onChange={(e) => {
+                e.target.value < 0
+                  ? (e.target.value = 0)
+                  : setZipcode(e.target.value);
+              }}
               InputProps={{
                 classes: {
                   root: classes.root,
@@ -188,8 +281,7 @@ const EditProfile = () => {
               }}
               required
             />
-            <h3 className="register__header">Select Profile Image</h3>
-            <CardContent>
+            <CardContent className={classes.selectImg}>
               <input
                 accept="image/*"
                 className={classes.input}
@@ -214,18 +306,17 @@ const EditProfile = () => {
                 </Fab>
               </label>
             </CardContent>
-            <h3 className="register__header">Select Card Image</h3>
-            <CardContent>
+            <CardContent className={classes.selectImg}>
               <input
                 accept="image/*"
                 className={classes.input}
-                id="contained-button-file"
+                id="contained-button-file-card"
                 multiple
                 type="file"
                 onChange={handleCardImgUploadClick}
                 required
               />
-              <label htmlFor="contained-button-file">
+              <label htmlFor="contained-button-file-card">
                 <Fab
                   component="span"
                   className={classes.button}
@@ -242,7 +333,9 @@ const EditProfile = () => {
             </CardContent>
             <div>
               <Link to="/myprofile">
-                <Button variant="contained">Cancel</Button>
+                <Button variant="contained" className={classes.buttonCancel}>
+                  Cancel
+                </Button>
               </Link>
 
               <Button
@@ -250,7 +343,10 @@ const EditProfile = () => {
                 variant="contained"
                 color="primary"
                 size="large"
+                onClick={checkImg}
                 onSubmit={updateProfile}
+                className={classes.buttonSave}
+                startIcon={<SaveIcon />}
               >
                 Save
               </Button>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { ToastProvider, useToasts } from "react-toast-notifications";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { useStateValue } from "../../StateProvider";
@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SignInWithGymMate() {
+  const { addToast } = useToasts();
   const classes = useStyles();
   //   const [{ user }, dispatch] = useStateValue();
   const [{}, dispatch] = useStateValue();
@@ -67,13 +68,14 @@ function SignInWithGymMate() {
       .auth()
       .signInWithEmailAndPassword(email, pass)
       .then((userCredential) => {
+        addToast("Logged In Successfully", { appearance: "success" });
         dispatch({
           type: actionTypes.SET_USER,
           user: userCredential.user,
         });
       })
       .catch((error) => {
-        alert("Incorrect Username And/or Password");
+        addToast("Incorrect Username and/or Password", { appearance: "error" });
       });
   };
 

@@ -26,12 +26,29 @@ const GymMateCards = () => {
           key={person.uid}
           preventSwipe={["up", "down"]}
         >
-          <div
-            style={{ backgroundImage: `url(${person.profileImgUrl})` }}
-            className="card"
-          >
-            <h3>{person.firstName + " " + person.lastName}</h3>
-          </div>
+          {person.cardImgUrl ? (
+            <div
+              style={{ backgroundImage: `url(${person.cardImgUrl})` }}
+              className="card"
+            >
+              {person.username ? (
+                <h3>{person.username}</h3>
+              ) : (
+                <h3>{person.firstName + " " + person.lastName}</h3>
+              )}
+            </div>
+          ) : (
+            <div
+              style={{ backgroundImage: `url(${person.profileImgUrl})` }}
+              className="card"
+            >
+              {person.username ? (
+                <h3>{person.username}</h3>
+              ) : (
+                <h3>{person.firstName + " " + person.lastName}</h3>
+              )}
+            </div>
+          )}
         </TinderCard>
       ))}
     </div>

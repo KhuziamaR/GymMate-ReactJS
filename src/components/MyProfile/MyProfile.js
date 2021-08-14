@@ -23,6 +23,7 @@ function MyProfile() {
   const classes = useStyles();
   const [{ user }, dispatch] = useStateValue();
   const [age, setAge] = useState(null);
+  const [cardImgUrl, setCardImgUrl] = useState(null);
   const [noAge, setNoAge] = useState(null);
 
   useEffect(() => {
@@ -36,6 +37,7 @@ function MyProfile() {
           } else {
             setAge(doc.data().age);
           }
+          setCardImgUrl(doc.data().cardImgUrl);
         }
       })
       .catch((error) => {
@@ -67,7 +69,7 @@ function MyProfile() {
               >
                 <div
                   style={{
-                    backgroundImage: `url(${user.photoURL})`,
+                    backgroundImage: `url(${cardImgUrl})`,
                   }}
                   className="myProfile__card"
                 >
