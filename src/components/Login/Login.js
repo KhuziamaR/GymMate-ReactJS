@@ -8,21 +8,19 @@ import firebase from "firebase";
 import database from "../../firebase";
 import { Link, useHistory } from "react-router-dom";
 import { ToastProvider, useToasts } from "react-toast-notifications";
+import { Redirect } from "react-router-dom";
 function Login() {
   const { addToast } = useToasts();
   const [{}, dispatch] = useStateValue();
   const [lat, setLat] = useState(null);
   const [long, setLong] = useState(null);
+  const [redirect, setRedirect] = useState(false);
 
   const signInGoogle = () => {
     auth
       .signInWithPopup(provider)
       .then((result) => {
         addToast("Logged in Successfully", { appearance: "success" });
-        dispatch({
-          type: actionTypes.SET_USER,
-          user: result.user,
-        });
 
         const fullName = result.user.displayName.split(" ");
         var docRef = database.collection("people").doc(result.user.uid);
@@ -30,24 +28,17 @@ function Login() {
         docRef
           .get()
           .then((doc) => {
-            if (doc.exists) {
-              console.log("Document Data: ", doc.data());
+            if (!doc.exists) {
+              setRedirect(true);
+              dispatch({
+                type: actionTypes.SET_USER,
+                user: result.user,
+              });
             } else {
-              database
-                .collection("people")
-                .doc(result.user.uid)
-                .set({
-                  firstName: fullName[0],
-                  lastName: fullName[1],
-                  age: "notSet",
-                  location: {
-                    lat: lat,
-                    long: long,
-                  },
-                  uid: result.user.uid,
-                  profileImgUrl: result.user.photoURL,
-                  newUser: false,
-                });
+              dispatch({
+                type: actionTypes.SET_USER,
+                user: result.user,
+              });
             }
           })
           .catch((error) => {
@@ -67,6 +58,7 @@ function Login() {
   }, []);
   return (
     <div className="login">
+      {redirect ? <Redirect push to="/newuser" /> : null}
       <div className="login__container">
         <img src={logo} alt="Gym Mate Logo" />
         <div className="login__text">

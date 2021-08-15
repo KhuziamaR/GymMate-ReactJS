@@ -24,7 +24,7 @@ import Chip from "@material-ui/core/Chip";
 
 import { Box } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import "./EditProfile.css";
+import "./NewUser.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -161,7 +161,7 @@ function getStyles(name, sports, theme) {
   };
 }
 
-const EditProfile = () => {
+const NewUser = () => {
   const { addToast } = useToasts();
   const [{ user }, dispatch] = useStateValue();
   const classes = useStyles();
@@ -304,7 +304,7 @@ const EditProfile = () => {
         <div className="edit__innerContainer">
           <form className={classes.root2} onSubmit={updateProfile}>
             <Box m={2} pb={1}>
-              <h1 className="edit__header">Update Profile</h1>
+              <h1 className="edit__header">Welcome To Gym Mate</h1>
             </Box>
             <TextField
               onChange={(e) => setUserName(e.target.value)}
@@ -481,7 +481,7 @@ const EditProfile = () => {
                 className={classes.buttonSave}
                 startIcon={<SaveIcon />}
               >
-                Save
+                Start Using GymMate
               </Button>
             </div>
           </form>
@@ -490,4 +490,4 @@ const EditProfile = () => {
     </div>
   );
 };
-export default EditProfile;
+export default NewUser;

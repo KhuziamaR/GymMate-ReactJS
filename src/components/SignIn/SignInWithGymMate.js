@@ -10,6 +10,7 @@ import Box from "@material-ui/core/Box";
 import CardContent from "@material-ui/core/CardContent";
 import Fab from "@material-ui/core/Fab";
 import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
+import { Redirect } from "react-router-dom";
 
 import { auth } from "../../firebase";
 import { provider } from "../../firebase";
@@ -60,6 +61,7 @@ function SignInWithGymMate() {
   const [{}, dispatch] = useStateValue();
   const [email, setEmail] = useState(null);
   const [pass, setPass] = useState(null);
+  const [redirect, setRedirect] = useState(false);
 
   const signIn = (e) => {
     e.preventDefault();
@@ -67,12 +69,29 @@ function SignInWithGymMate() {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, pass)
-      .then((userCredential) => {
+      .then((result) => {
         addToast("Logged In Successfully", { appearance: "success" });
-        dispatch({
-          type: actionTypes.SET_USER,
-          user: userCredential.user,
-        });
+        var docRef = database.collection("people").doc(result.user.uid);
+
+        docRef
+          .get()
+          .then((doc) => {
+            if (!doc.exists) {
+              setRedirect(true);
+              dispatch({
+                type: actionTypes.SET_USER,
+                user: result.user,
+              });
+            } else {
+              dispatch({
+                type: actionTypes.SET_USER,
+                user: result.user,
+              });
+            }
+          })
+          .catch((error) => {
+            addToast(error.message, { appearance: "error" });
+          });
       })
       .catch((error) => {
         addToast("Incorrect Username and/or Password", { appearance: "error" });
@@ -81,6 +100,8 @@ function SignInWithGymMate() {
 
   return (
     <div>
+      {redirect ? <Redirect push to="/newuser" /> : null}
+
       <div className="register__outterContainer">
         <div className="register__innerContainer">
           <form className={classes.root2} onSubmit={signIn}>

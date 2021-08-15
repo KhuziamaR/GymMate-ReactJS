@@ -12,13 +12,14 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { useStateValue } from "./StateProvider";
 import Registration from "./components/signUp/Registration";
 import SignInWithGymMate from "./components/SignIn/SignInWithGymMate";
+import NewUser from "./components/NewUser/NewUser";
 import "./App.css";
 import { ToastProvider } from "react-toast-notifications";
 function App() {
   const [{ user }, dispatch] = useStateValue();
 
   return (
-    <ToastProvider>
+    <ToastProvider autoDismiss autoDismissTimeout="3000">
       <div className="App">
         {!user ? (
           <Router>
@@ -37,6 +38,9 @@ function App() {
         ) : (
           <Router>
             <Switch>
+              <Route path="/newuser">
+                <NewUser />
+              </Route>
               <Route path="/myprofile/edit">
                 <Header backButton="/myprofile" />
                 <EditProfile />
