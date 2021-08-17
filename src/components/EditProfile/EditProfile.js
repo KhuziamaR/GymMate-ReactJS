@@ -471,6 +471,11 @@ const EditProfile = () => {
               </label>
             </CardContent>
             <div>
+              <Link to="/myprofile">
+                <Button variant="contained" className={classes.buttonCancel}>
+                  Cancel
+                </Button>
+              </Link>
               <Button
                 type="submit"
                 variant="contained"

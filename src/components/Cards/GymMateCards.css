@@ -10,17 +10,38 @@
   box-shadow: 0px 18px 53px 0px rgba(0, 0, 0, 0.3);
 }
 
-.card > h3 {
+.card > span {
   position: absolute;
   bottom: 10px;
   color: white;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.card__details {
+  background-color: white;
+  width: 600px;
+  padding: 20px;
+  max-width: 85vw;
+  border-radius: 20px;
+  box-shadow: 0px 18px 53px 0px rgba(0, 0, 0, 0.2);
 }
 
 .gymmateCards__cardContainer {
   display: flex;
   justify-content: center;
-  margin-top: 5vh;
+  margin-top: 1vh;
 }
 .swipe {
   position: absolute;
+}
+.card > span {
+  /* border: 2px solid #e75480; */
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 20px;
+}
+#card__username {
+  color: white;
 }
