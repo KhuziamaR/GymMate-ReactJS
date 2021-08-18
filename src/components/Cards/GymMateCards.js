@@ -4,6 +4,7 @@ import "./GymMateCards.css";
 import { useStateValue } from "../../StateProvider";
 import database from "../../firebase";
 import { actionTypes } from "../../reducer";
+import { ToastProvider, useToasts } from "react-toast-notifications";
 
 // let peopleDB = [];
 // let peopleState = peopleDB;
@@ -19,19 +20,12 @@ import { actionTypes } from "../../reducer";
 //   .then((peopleState = peopleDB))
 //   .then(console.log(peopleDB));
 
-const GymMateCards = (
-  {
-    // likes,
-    // dislikes,
-    // likesMe,
-    // alreadyRemoved,
-  }
-) => {
+const GymMateCards = () => {
   const [{ user, likes, matches, likesme, dislikes }, dispatch] =
     useStateValue();
   const [people, setPeople] = useState(new Set());
   const [lastDirection, setLastDirection] = useState();
-
+  const { addToast } = useToasts();
   // const childRefs = useMemo(
   //   () =>
   //     Array(peopleDB.length)
@@ -54,8 +48,6 @@ const GymMateCards = (
   }, []);
 
   useEffect(() => {
-    alert("you have new matches");
-    console.log(matches);
     if (matches) {
       matches.forEach((match) => {
         database
@@ -66,14 +58,26 @@ const GymMateCards = (
           .set({
             uid: match,
           })
-          .then(console.log("UPDATED MATCHES", matches));
+          .then(
+            database
+              .collection("people")
+              .doc(match)
+              .collection("matches")
+              .doc(user.uid)
+              .set({
+                uid: user.uid,
+              })
+          )
+          .then(() => {
+            console.log("LIKES ", likes);
+            console.log("LIKES ME ", likesme);
+            console.log("MATCHES ", matches);
+          });
       });
     }
-    console.log("LIKES", likes);
-    console.log("LIKES ME", likesme);
   }, [matches]);
 
-  const leftSwipe = (direction, person) => {
+  const leftSwipe = (person) => {
     database
       .collection("people")
       .doc(user.uid)
@@ -81,16 +85,16 @@ const GymMateCards = (
       .doc(person)
       .set({
         uid: person,
-      })
-      .then(
-        setPeople(
-          people.filter(
-            (person) => !dislikes.has(person.uid) && !likes.has(person.uid)
-          )
-        )
-      );
+      });
+    // .then(
+    //   setPeople(
+    //     people.filter(
+    //       (person) => !dislikes.has(person.uid) && !likes.has(person.uid)
+    //     )
+    //   )
+    // );
   };
-  const rightSwipt = (direction, person) => {
+  const rightSwipt = (person) => {
     database
       .collection("people")
       .doc(user.uid)
@@ -100,12 +104,18 @@ const GymMateCards = (
         uid: person,
       })
       .then(
-        setPeople(
-          people.filter(
-            (person) => !dislikes.has(person.uid) && !likes.has(person.uid)
-          )
-        )
+        dispatch({
+          type: actionTypes.SET_LIKES,
+          likes: new Set([...likes, person]),
+        })
       )
+      // .then(
+      //   setPeople(
+      //     people.filter(
+      //       (person) => !dislikes.has(person.uid) && !likes.has(person.uid)
+      //     )
+      //   )
+      // )
       .then(
         database
           .collection("people")
@@ -115,33 +125,33 @@ const GymMateCards = (
           .set({
             uid: user.uid,
           })
-      );
+      )
+      .then(() => {
+        var match = new Set([...likes].filter((x) => likesme.has(x)));
+        if (match.size > 0) {
+          dispatch({
+            type: actionTypes.SET_MATCHES,
+            matches: new Set([...match, ...matches]),
+          });
+          addToast("New Matches!", { appearance: "success" });
+        }
+      });
   };
 
-  const swiped = (direction, personToDelete) => {
+  const swiped = (direction, person) => {
     setLastDirection(direction);
     if (direction == "left") {
       dispatch({
         type: actionTypes.SET_DISLIKES,
-        dislikes: dislikes.add(personToDelete),
+        dislikes: dislikes.add(person),
       });
-      leftSwipe(direction, personToDelete);
+      leftSwipe(person);
     } else if (direction == "right") {
       dispatch({
         type: actionTypes.SET_LIKES,
-        likes: likes.add(personToDelete),
+        likes: likes.add(person),
       });
-      rightSwipt(direction, personToDelete);
-    }
-    // alreadyRemoved.add({ uid: personToDelete, direction: direction });
-    // console.log("already disliked:::", dislikes, "end dislikes");
-    // console.log("already liked:::", likes, "end likes");
-    var match = new Set([...likes].filter((x) => likesme.has(x)));
-    if (match.size > 0) {
-      dispatch({
-        type: actionTypes.SET_MATCHES,
-        matches: new Set([...match, ...matches]),
-      });
+      rightSwipt(person);
     }
   };
 
@@ -170,23 +180,10 @@ const GymMateCards = (
   //   }
   // };
 
-  // const onSwipe = (direction) => {
-  //   // console.log("You Swiped " + direction + " on ");
-  //   console.log(direction);
-  // };
-
   return (
     <div>
       <div className="gymmateCards__cardContainer">
         {[...people].map((person, index) => {
-          // console.log(person.uid);
-          // if (
-          //   likes.includes(person.uid) ||
-          //   dislikes.includes(person.uid) ||
-          //   alreadyRemoved.includes(person.uid)
-          // ) {
-          //   return null;
-          // }
           if (
             person.uid != user.uid &&
             !likes.has(person.uid) &&

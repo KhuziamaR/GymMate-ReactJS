@@ -52,6 +52,33 @@ const useStyles = makeStyles((theme) => ({
   input: {
     display: "none",
   },
+  buttonSave: {
+    background: "#e75480",
+    borderRadius: 3,
+    border: "1px solid #e75480",
+    color: "white",
+    height: 48,
+    fontSize: "1rem",
+    padding: "0 30px",
+    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+    "&:hover": {
+      background: "#e75480",
+      fontSize: "1.2rem",
+    },
+  },
+  buttonCancel: {
+    background: "white",
+    borderRadius: 3,
+    border: "1px solid #e75480",
+    color: "#e75480",
+    height: 48,
+    fontSize: "1rem",
+    padding: "0 30px",
+    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+    "&:hover": {
+      fontSize: "1.2rem",
+    },
+  },
 }));
 
 function SignInWithGymMate() {
@@ -62,6 +89,36 @@ function SignInWithGymMate() {
   const [email, setEmail] = useState(null);
   const [pass, setPass] = useState(null);
   const [redirect, setRedirect] = useState(false);
+
+  let profilesLiked = new Set();
+  let profilesLikedMe = new Set();
+  let profilesDisliked = new Set();
+  let profilesRemoved = new Set();
+
+  const setLikedArray = async (uid) => {
+    const snapshot = await database
+      .collection("people")
+      .doc(uid)
+      .collection("profilesLiked")
+      .get();
+    return snapshot.docs.map((doc) => profilesLiked.add(doc.data().uid));
+  };
+  const setLikedMeArray = async (uid) => {
+    const snapshot = await database
+      .collection("people")
+      .doc(uid)
+      .collection("profilesLikedMe")
+      .get();
+    return snapshot.docs.map((doc) => profilesLikedMe.add(doc.data().uid));
+  };
+  const setDislikesArray = async (uid) => {
+    const snapshot = await database
+      .collection("people")
+      .doc(uid)
+      .collection("dislikes")
+      .get();
+    return snapshot.docs.map((doc) => profilesDisliked.add(doc.data().uid));
+  };
 
   const signIn = (e) => {
     e.preventDefault();
@@ -83,10 +140,43 @@ function SignInWithGymMate() {
                 user: result.user,
               });
             } else {
-              dispatch({
-                type: actionTypes.SET_USER,
-                user: result.user,
-              });
+              setLikedArray(result.user.uid).then(
+                setLikedMeArray(result.user.uid).then(
+                  setDislikesArray(result.user.uid).then(() => {
+                    profilesRemoved = [...profilesDisliked, ...profilesLiked];
+                    let matches = new Set(
+                      [...profilesLiked].filter((x) => profilesLikedMe.has(x))
+                    );
+
+                    // console.log(
+                    //   profilesDisliked,
+                    //   profilesLiked,
+                    //   profilesLikedMe,
+                    //   profilesRemoved
+                    // );
+                    dispatch({
+                      type: actionTypes.SET_LIKES,
+                      likes: profilesLiked,
+                    });
+                    dispatch({
+                      type: actionTypes.SET_DISLIKES,
+                      dislikes: profilesDisliked,
+                    });
+                    dispatch({
+                      type: actionTypes.SET_LIKESME,
+                      likesme: profilesLikedMe,
+                    });
+                    dispatch({
+                      type: actionTypes.SET_USER,
+                      user: result.user,
+                    });
+                    dispatch({
+                      type: actionTypes.SET_MATCHES,
+                      matches: matches,
+                    });
+                  })
+                )
+              );
             }
           })
           .catch((error) => {
@@ -145,7 +235,9 @@ function SignInWithGymMate() {
             />
             <div>
               <Link to="/">
-                <Button variant="contained">Cancel</Button>
+                <Button variant="contained" className={classes.buttonCancel}>
+                  Cancel
+                </Button>
               </Link>
 
               <Button
@@ -153,8 +245,8 @@ function SignInWithGymMate() {
                 variant="contained"
                 color="primary"
                 size="large"
-                // onClick={signUp}
                 onSubmit={signIn}
+                className={classes.buttonSave}
               >
                 SignIn
               </Button>

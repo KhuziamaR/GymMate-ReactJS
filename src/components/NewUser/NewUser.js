@@ -300,9 +300,9 @@ const NewUser = () => {
                               appearance: "success",
                             });
 
-                            setLikedArray().then(
-                              setLikedMeArray().then(
-                                setDislikesArray().then(() => {
+                            setLikedArray(user.uid).then(
+                              setLikedMeArray(user.uid).then(
+                                setDislikesArray(user.uid).then(() => {
                                   profilesRemoved = [
                                     ...profilesDisliked,
                                     ...profilesLiked,
@@ -313,12 +313,12 @@ const NewUser = () => {
                                     )
                                   );
 
-                                  console.log(
-                                    profilesDisliked,
-                                    profilesLiked,
-                                    profilesLikedMe,
-                                    profilesRemoved
-                                  );
+                                  // console.log(
+                                  //   profilesDisliked,
+                                  //   profilesLiked,
+                                  //   profilesLikedMe,
+                                  //   profilesRemoved
+                                  // );
                                   dispatch({
                                     type: actionTypes.SET_LIKES,
                                     likes: profilesLiked,

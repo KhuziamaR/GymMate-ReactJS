@@ -39,6 +39,33 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(2),
     },
   },
+  buttonSave: {
+    background: "#e75480",
+    borderRadius: 3,
+    border: "1px solid #e75480",
+    color: "white",
+    height: 48,
+    fontSize: "1rem",
+    padding: "0 30px",
+    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+    "&:hover": {
+      background: "#e75480",
+      fontSize: "1.2rem",
+    },
+  },
+  buttonCancel: {
+    background: "white",
+    borderRadius: 3,
+    border: "1px solid #e75480",
+    color: "#e75480",
+    height: 48,
+    fontSize: "1rem",
+    padding: "0 30px",
+    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+    "&:hover": {
+      fontSize: "1.2rem",
+    },
+  },
   focused: {},
   disabled: {},
   notchedOutline: {},
@@ -119,7 +146,9 @@ function Registration() {
 
           <div>
             <Link to="/">
-              <Button variant="contained">Cancel</Button>
+              <Button variant="contained" className={classes.buttonCancel}>
+                Cancel
+              </Button>
             </Link>
 
             <Button
@@ -127,8 +156,8 @@ function Registration() {
               variant="contained"
               color="primary"
               size="large"
-              // onClick={signUp}
               onSubmit={signUp}
+              className={classes.buttonSave}
             >
               Signup
             </Button>
