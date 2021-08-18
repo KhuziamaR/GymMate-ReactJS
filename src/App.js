@@ -21,68 +21,69 @@ function App() {
   // const [likedMe, setLikedMe] = useState([]);
   // const [disliked, setDisliked] = useState([]);
   // const [removed, setRemoved] = useState([]);
-  const [reloadArrays, setReloadArrays] = useState(false);
-  let profilesLiked = new Set();
-  let profilesLikedMe = new Set();
-  let profilesDisliked = new Set();
-  let profilesRemoved = new Set();
-  const setLikedArray = async () => {
-    const snapshot = await database
-      .collection("people")
-      .doc(user.uid)
-      .collection("profilesLiked")
-      .get();
-    return snapshot.docs.map((doc) => profilesLiked.add(doc.data().uid));
-  };
-  const setLikedMeArray = async () => {
-    const snapshot = await database
-      .collection("people")
-      .doc(user.uid)
-      .collection("profilesLikedMe")
-      .get();
-    return snapshot.docs.map((doc) => profilesLikedMe.add(doc.data().uid));
-  };
-  const setDislikesArray = async () => {
-    const snapshot = await database
-      .collection("people")
-      .doc(user.uid)
-      .collection("dislikes")
-      .get();
-    return snapshot.docs.map((doc) => profilesDisliked.add(doc.data().uid));
-  };
+  // const [reloadArrays, setReloadArrays] = useState(false);
+  // let profilesLiked = new Set();
+  // let profilesLikedMe = new Set();
+  // let profilesDisliked = new Set();
+  // let profilesRemoved = new Set();
 
-  useEffect(() => {
-    if (user) {
-      var docRef = database.collection("people").doc(user.uid);
-      docRef
-        .get()
-        .then((doc) => {
-          if (!doc.exists) {
-            console.log("new user");
-          } else {
-            setLikedArray().then(
-              setLikedMeArray().then(
-                setDislikesArray().then(() => {
-                  profilesRemoved = [...profilesDisliked, ...profilesLiked];
-                  console.log(
-                    profilesDisliked,
-                    profilesLiked,
-                    profilesLikedMe,
-                    profilesRemoved
-                  );
-                  if (!reloadArrays) {
-                    setReloadArrays(!reloadArrays);
-                  }
-                })
-              )
-            );
-          }
-        })
-        .catch((error) => {
-          alert("error");
-        });
-    }
-  }, [user, reloadArrays]);
+  // const setLikedArray = async () => {
+  //   const snapshot = await database
+  //     .collection("people")
+  //     .doc(user.uid)
+  //     .collection("profilesLiked")
+  //     .get();
+  //   return snapshot.docs.map((doc) => profilesLiked.add(doc.data().uid));
+  // };
+  // const setLikedMeArray = async () => {
+  //   const snapshot = await database
+  //     .collection("people")
+  //     .doc(user.uid)
+  //     .collection("profilesLikedMe")
+  //     .get();
+  //   return snapshot.docs.map((doc) => profilesLikedMe.add(doc.data().uid));
+  // };
+  // const setDislikesArray = async () => {
+  //   const snapshot = await database
+  //     .collection("people")
+  //     .doc(user.uid)
+  //     .collection("dislikes")
+  //     .get();
+  //   return snapshot.docs.map((doc) => profilesDisliked.add(doc.data().uid));
+  // };
+
+  // useEffect(() => {
+  //   if (user) {
+  //     var docRef = database.collection("people").doc(user.uid);
+  //     docRef
+  //       .get()
+  //       .then((doc) => {
+  //         if (!doc.exists) {
+  //           console.log("new user");
+  //         } else {
+  //           setLikedArray().then(
+  //             setLikedMeArray().then(
+  //               setDislikesArray().then(() => {
+  //                 profilesRemoved = [...profilesDisliked, ...profilesLiked];
+  //                 console.log(
+  //                   profilesDisliked,
+  //                   profilesLiked,
+  //                   profilesLikedMe,
+  //                   profilesRemoved
+  //                 );
+  //                 if (!reloadArrays) {
+  //                   setReloadArrays(!reloadArrays);
+  //                 }
+  //               })
+  //             )
+  //           );
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         alert("error");
+  //       });
+  //   }
+  // }, [user, reloadArrays]);
 
   return (
     <ToastProvider autoDismiss autoDismissTimeout="3000">
@@ -129,10 +130,10 @@ function App() {
               <Route path="/">
                 <Header />
                 <GymMateCards
-                  alreadyLiked={profilesLiked}
-                  alreadyDisliked={profilesDisliked}
-                  alreadyLikedMe={profilesLikedMe}
-                  alreadyRemoved={profilesRemoved}
+                // alreadyLiked={profilesLiked}
+                // alreadyDisliked={profilesDisliked}
+                // alreadyLikedMe={profilesLikedMe}
+                // alreadyRemoved={profilesRemoved}
                 />
                 <SwipeButtons />
               </Route>

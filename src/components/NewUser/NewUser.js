@@ -203,6 +203,36 @@ const NewUser = () => {
     console.log(selectedCardImg);
   };
 
+  let profilesLiked = new Set();
+  let profilesLikedMe = new Set();
+  let profilesDisliked = new Set();
+  let profilesRemoved = new Set();
+
+  const setLikedArray = async (uid) => {
+    const snapshot = await database
+      .collection("people")
+      .doc(uid)
+      .collection("profilesLiked")
+      .get();
+    return snapshot.docs.map((doc) => profilesLiked.add(doc.data().uid));
+  };
+  const setLikedMeArray = async (uid) => {
+    const snapshot = await database
+      .collection("people")
+      .doc(uid)
+      .collection("profilesLikedMe")
+      .get();
+    return snapshot.docs.map((doc) => profilesLikedMe.add(doc.data().uid));
+  };
+  const setDislikesArray = async (uid) => {
+    const snapshot = await database
+      .collection("people")
+      .doc(uid)
+      .collection("dislikes")
+      .get();
+    return snapshot.docs.map((doc) => profilesDisliked.add(doc.data().uid));
+  };
+
   const updateProfile = (e) => {
     e.preventDefault();
     var isValidZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zipcode);
@@ -269,10 +299,50 @@ const NewUser = () => {
                             addToast("Profile Updated Successfully", {
                               appearance: "success",
                             });
-                            dispatch({
-                              type: actionTypes.SET_USER,
-                              user: user,
-                            });
+
+                            setLikedArray().then(
+                              setLikedMeArray().then(
+                                setDislikesArray().then(() => {
+                                  profilesRemoved = [
+                                    ...profilesDisliked,
+                                    ...profilesLiked,
+                                  ];
+                                  let matches = new Set(
+                                    [...profilesLiked].filter((x) =>
+                                      profilesLikedMe.has(x)
+                                    )
+                                  );
+
+                                  console.log(
+                                    profilesDisliked,
+                                    profilesLiked,
+                                    profilesLikedMe,
+                                    profilesRemoved
+                                  );
+                                  dispatch({
+                                    type: actionTypes.SET_LIKES,
+                                    likes: profilesLiked,
+                                  });
+                                  dispatch({
+                                    type: actionTypes.SET_DISLIKES,
+                                    dislikes: profilesDisliked,
+                                  });
+                                  dispatch({
+                                    type: actionTypes.SET_LIKESME,
+                                    likesme: profilesLikedMe,
+                                  });
+                                  dispatch({
+                                    type: actionTypes.SET_USER,
+                                    user: user,
+                                  });
+                                  dispatch({
+                                    type: actionTypes.SET_MATCHES,
+                                    matches: matches,
+                                  });
+                                })
+                              )
+                            );
+
                             setRedirect(true);
                           })
                           // .then(() => {

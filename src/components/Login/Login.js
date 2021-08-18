@@ -15,6 +15,37 @@ function Login() {
   const [lat, setLat] = useState(null);
   const [long, setLong] = useState(null);
   const [redirect, setRedirect] = useState(false);
+  const [reloadArrays, setReloadArrays] = useState(false);
+
+  let profilesLiked = new Set();
+  let profilesLikedMe = new Set();
+  let profilesDisliked = new Set();
+  let profilesRemoved = new Set();
+
+  const setLikedArray = async (uid) => {
+    const snapshot = await database
+      .collection("people")
+      .doc(uid)
+      .collection("profilesLiked")
+      .get();
+    return snapshot.docs.map((doc) => profilesLiked.add(doc.data().uid));
+  };
+  const setLikedMeArray = async (uid) => {
+    const snapshot = await database
+      .collection("people")
+      .doc(uid)
+      .collection("profilesLikedMe")
+      .get();
+    return snapshot.docs.map((doc) => profilesLikedMe.add(doc.data().uid));
+  };
+  const setDislikesArray = async (uid) => {
+    const snapshot = await database
+      .collection("people")
+      .doc(uid)
+      .collection("dislikes")
+      .get();
+    return snapshot.docs.map((doc) => profilesDisliked.add(doc.data().uid));
+  };
 
   const signInGoogle = () => {
     auth
@@ -35,10 +66,43 @@ function Login() {
                 user: result.user,
               });
             } else {
-              dispatch({
-                type: actionTypes.SET_USER,
-                user: result.user,
-              });
+              setLikedArray(result.user.uid).then(
+                setLikedMeArray(result.user.uid).then(
+                  setDislikesArray(result.user.uid).then(() => {
+                    profilesRemoved = [...profilesDisliked, ...profilesLiked];
+                    let matches = new Set(
+                      [...profilesLiked].filter((x) => profilesLikedMe.has(x))
+                    );
+
+                    console.log(
+                      profilesDisliked,
+                      profilesLiked,
+                      profilesLikedMe,
+                      profilesRemoved
+                    );
+                    dispatch({
+                      type: actionTypes.SET_LIKES,
+                      likes: profilesLiked,
+                    });
+                    dispatch({
+                      type: actionTypes.SET_DISLIKES,
+                      dislikes: profilesDisliked,
+                    });
+                    dispatch({
+                      type: actionTypes.SET_LIKESME,
+                      likesme: profilesLikedMe,
+                    });
+                    dispatch({
+                      type: actionTypes.SET_USER,
+                      user: result.user,
+                    });
+                    dispatch({
+                      type: actionTypes.SET_MATCHES,
+                      matches: matches,
+                    });
+                  })
+                )
+              );
             }
           })
           .catch((error) => {
