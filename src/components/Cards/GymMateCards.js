@@ -5,7 +5,7 @@ import { useStateValue } from "../../StateProvider";
 import database from "../../firebase";
 import { actionTypes } from "../../reducer";
 import { ToastProvider, useToasts } from "react-toast-notifications";
-
+import { v4 as uuidv4 } from "uuid";
 // let peopleDB = [];
 // let peopleState = peopleDB;
 
@@ -86,13 +86,6 @@ const GymMateCards = () => {
       .set({
         uid: person,
       });
-    // .then(
-    //   setPeople(
-    //     people.filter(
-    //       (person) => !dislikes.has(person.uid) && !likes.has(person.uid)
-    //     )
-    //   )
-    // );
   };
   const rightSwipt = (person) => {
     database

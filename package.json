@@ -12,11 +12,13 @@
     "material-ui-address-input": "^0.4.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-firebase-hooks": "^3.0.4",
     "react-geocode": "^0.2.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-tinder-card": "^1.4.0",
     "react-toast-notifications": "^2.5.1",
+    "uuid": "^8.3.2",
     "web-vitals": "^1.1.2"
   },
   "scripts": {

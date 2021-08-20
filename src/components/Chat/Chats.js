@@ -10,7 +10,7 @@ function Chats() {
   const [chatMatches, setChatMatches] = useState([]);
 
   useEffect(() => {
-    console.log(chatMatches);
+    // console.log(chatMatches);
     const unsubscribe = database.collection("people").onSnapshot((snapshot) =>
       setChatMatches(
         snapshot.docs.map((doc) => {
@@ -25,41 +25,22 @@ function Chats() {
       unsubscribe();
     };
   }, []);
-  // useEffect(() => {
-  //   if (matches) {
-  //     matches.forEach((match) => {
-  //       var docRef = database.collection("people").doc(match);
-  //       docRef
-  //         .get()
-  //         .then((doc) => {
-  //           if (doc.exists) {
-  //             setChatMatches(...chatMatches, {
-  //               username: doc.data().username,
-  //               profileImgUrl: doc.data().profileImgUrl,
-  //             });
-  //           }
-  //         })
-  //         .catch((error) => {
-  //           console.log("Error getting document:", error);
-  //         });
-  //     });
-  //   }
-  // }, [matches]);
 
   return (
     <div className="chats">
       {
         chatMatches
-          ? chatMatches.map((chat) => {
+          ? chatMatches.map((person) => {
               {
-                if (chat != null && chat != undefined) {
+                if (person != null && person != undefined) {
                   return (
                     <Chat
-                      key={chat.uid}
-                      name={chat.username}
+                      key={person.uid}
+                      personUid={person.uid}
+                      name={person.username}
                       message="Ball at 6?"
                       timeStamp="42 minutes ago"
-                      profilePic={chat.profileImgUrl}
+                      profilePic={person.profileImgUrl}
                     />
                   );
                 }
