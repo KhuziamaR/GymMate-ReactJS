@@ -35,7 +35,6 @@ const GymMateCards = () => {
   // );
 
   useEffect(() => {
-    console.log(people);
     const unsubscribe = database
       .collection("people")
       .onSnapshot((snapshot) =>
@@ -102,13 +101,6 @@ const GymMateCards = () => {
           likes: new Set([...likes, person]),
         })
       )
-      // .then(
-      //   setPeople(
-      //     people.filter(
-      //       (person) => !dislikes.has(person.uid) && !likes.has(person.uid)
-      //     )
-      //   )
-      // )
       .then(
         database
           .collection("people")
