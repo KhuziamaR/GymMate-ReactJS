@@ -56,18 +56,4 @@
   .login__text > h1 {
     font-size: 20px;
   }
-  .login__withGoogle > span {
-    font-size: 12px;
-  }
-  .login__withGoogle > img {
-    height: 15px !important;
-    margin-right: 5px;
-  }
-  .login__Anonymously {
-    margin-top: 10px;
-  }
-  .login__Anonymously > .MuiSvgIcon-root {
-    margin-right: 5px;
-    font-size: 15px;
-  }
 }

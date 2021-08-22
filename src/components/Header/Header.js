@@ -15,24 +15,28 @@ const Header = ({ backButton }) => {
   return (
     <div className="header">
       {backButton ? (
-        <IconButton onClick={() => history.replace(backButton)}>
-          <ArrowBackIosIcon fontSize="large" className="header__icon" />
-        </IconButton>
+        <Link>
+          <IconButton onClick={() => history.replace(backButton)}>
+            <ArrowBackIosIcon fontSize="large" className="iconButton" />
+          </IconButton>
+        </Link>
       ) : (
         <Link to="/myprofile">
           <IconButton>
-            <PersonIcon fontSize="large" className="header__icon" />
+            <PersonIcon fontSize="large" className="iconButton" />
           </IconButton>
         </Link>
       )}
 
       <Link to="/">
-        <img className="header__logo" src={logo} alt="Gymmate" />
+        <IconButton>
+          <img className="header__logo" src={logo} alt="Gymmate" />
+        </IconButton>
       </Link>
 
       <Link to="/chat">
         <IconButton>
-          <QuestionAnswerIcon fontSize="large" className="header__icon" />
+          <QuestionAnswerIcon fontSize="large" className="iconButton" />
         </IconButton>
       </Link>
     </div>

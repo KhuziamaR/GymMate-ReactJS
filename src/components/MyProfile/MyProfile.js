@@ -17,6 +17,31 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
+  buttonSave: {
+    background: "#e75480",
+    borderRadius: 3,
+    border: "1px solid #e75480",
+    color: "white",
+    height: 48,
+    fontSize: "1rem",
+    padding: "0 30px",
+    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+    "&:hover": {
+      background: "#white",
+      color: "#e75480",
+    },
+    bottom: "4vh",
+    display: "inline-block",
+    fontSize: "16px",
+    margin: "4px 2px",
+    transitionDuration: " 0.4s",
+    cursor: "pointer",
+    position: "absolute",
+    marginLeft: "-80px",
+    left: "50%",
+    // width: "120px",
+    marginTop: "auto",
+  },
 }));
 
 function MyProfile() {
@@ -80,7 +105,7 @@ function MyProfile() {
           </div>
         </div>
         <Link to="/myprofile/edit">
-          <h3 className="button button5">EDIT PROFILE</h3>
+          <Button className={classes.buttonSave}>Edit Profile</Button>
         </Link>
       </div>
     </div>

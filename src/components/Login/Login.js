@@ -9,14 +9,115 @@ import database from "../../firebase";
 import { Link, useHistory } from "react-router-dom";
 import { ToastProvider, useToasts } from "react-toast-notifications";
 import { Redirect } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"Copyright © "}
+      <Link color="inherit" to="https://material-ui.com/">
+        Gym Mate
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: "70%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  buttonLogin: {
+    margin: theme.spacing(2, 0, 0),
+    background: "#e75480",
+    borderRadius: 3,
+    border: "1px solid #e75480",
+    color: "white",
+    height: 48,
+    fontSize: "1rem",
+    padding: "0 30px",
+    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+    "&:hover": {
+      background: "white",
+      color: "#e75480",
+    },
+  },
+  buttonGoogle: {
+    margin: theme.spacing(0, 0, 0),
+    background: "#b31b1b",
+    borderRadius: 3,
+    border: "1px solid #b31b1b",
+    color: "white",
+    height: 48,
+    fontSize: "1rem",
+    padding: "0 30px",
+    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+    "&:hover": {
+      background: "white",
+      color: "#b31b1b",
+    },
+  },
+  buttonLoginSmall: {
+    margin: theme.spacing(2, 0, 0),
+    background: "#e75480",
+    borderRadius: 3,
+    border: "1px solid #e75480",
+    color: "white",
+    height: 48,
+    fontSize: ".8rem",
+    padding: "0 30px",
+    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+    "&:hover": {
+      background: "white",
+      color: "#e75480",
+    },
+  },
+  buttonGoogleSmall: {
+    margin: theme.spacing(0, 0, 0),
+    background: "#b31b1b",
+    borderRadius: 3,
+    border: "1px solid #b31b1b",
+    color: "white",
+    height: 48,
+    fontSize: ".8rem",
+    padding: "0 30px",
+    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+    "&:hover": {
+      background: "white",
+      color: "#b31b1b",
+    },
+  },
+}));
+
 function Login() {
+  const matches = useMediaQuery("(min-width:700px)");
+
   const { addToast } = useToasts();
   const [{}, dispatch] = useStateValue();
   const [lat, setLat] = useState(null);
   const [long, setLong] = useState(null);
   const [redirect, setRedirect] = useState(false);
   const [reloadArrays, setReloadArrays] = useState(false);
-
+  const classes = useStyles();
   let profilesLiked = new Set();
   let profilesLikedMe = new Set();
   let profilesDisliked = new Set();
@@ -123,29 +224,79 @@ function Login() {
   return (
     <div className="login">
       {redirect ? <Redirect push to="/newuser" /> : null}
+
       <div className="login__container">
         <img src={logo} alt="Gym Mate Logo" />
         <div className="login__text">
-          <h1>Sign in to Gym Mate</h1>
+          <h1>Welcome to Gym Mate</h1>
         </div>
-        <Link to="/signin">
-          <div className="login__withGoogle">
-            <img src={logo} alt="GymMate Logo" />
-            <span>Sign In with Gym Mate</span>
+        <Container component="main" maxWidth="s">
+          <CssBaseline />
+          <div className={classes.paper}>
+            {!matches ? (
+              <form className={classes.form}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  className={classes.buttonGoogleSmall}
+                  onClick={signInGoogle}
+                >
+                  Sign In With Google
+                </Button>
+                <Link to="/signin">
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    className={classes.buttonLoginSmall}
+                  >
+                    Sign In With Gym Mate
+                  </Button>
+                </Link>
+                <Link to="/signup">
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    className={classes.buttonLoginSmall}
+                  >
+                    Sign up
+                  </Button>
+                </Link>
+              </form>
+            ) : (
+              <form className={classes.form}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  className={classes.buttonGoogle}
+                  onClick={signInGoogle}
+                >
+                  Sign In With Google
+                </Button>
+                <Link to="/signin">
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    className={classes.buttonLogin}
+                  >
+                    Sign In With Gym Mate
+                  </Button>
+                </Link>
+                <Link to="/signup">
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    className={classes.buttonLogin}
+                  >
+                    Dont Have an Account? Sign up
+                  </Button>
+                </Link>
+              </form>
+            )}
           </div>
-        </Link>
-        <div className="login__withGoogle" onClick={signInGoogle}>
-          <img
-            src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png"
-            alt="Google Logo"
-          />
-          <span>Sign In with Google</span>
-        </div>
-        <Link to="/signup">
-          <div className="login__withGoogle">
-            <div>Dont have an Account? Sign Up Here.</div>
-          </div>
-        </Link>
+          <Box mt={8}>
+            <Copyright />
+          </Box>
+        </Container>
       </div>
     </div>
   );
