@@ -1,6 +1,6 @@
 # What is Gym Mate? 
 Gym mate is a tinder-like web app that allows users to discover sports training partners, lifting buddies, a study friend or even just a friend!
-During the past covid 19 pandemic, many individuals, myself included have gained a few pounds. I created gymmate to help people find training partners so they can motivated each other to push themselves!
+During the past covid 19 pandemic, many individuals, myself included have gained a few pounds. I created gymmate to help people find training partners so they can motivate each other to push themselves!
 Users can dislike or like profiles that appear as a card by swiping left for dislike or right for like, if two users like each others profiles, they can chat through the real time chat feature included in the app. Gym Mate is built using ReactJS and firebase firestore.
 
 # App Video Demo
