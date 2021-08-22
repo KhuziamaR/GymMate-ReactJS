@@ -52,8 +52,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 3,
     border: "1px solid #e75480",
     color: "white",
-    height: 48,
-    fontSize: "1rem",
+    height: 51,
+    fontSize: ".9rem",
     padding: "0 30px",
     boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
     "&:hover": {
@@ -67,8 +67,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 3,
     border: "1px solid #b31b1b",
     color: "white",
-    height: 48,
-    fontSize: "1rem",
+    height: 51,
+    fontSize: ".9rem",
     padding: "0 30px",
     boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
     "&:hover": {

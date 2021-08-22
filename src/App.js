@@ -15,6 +15,8 @@ import SignInWithGymMate from "./components/SignIn/SignInWithGymMate";
 import NewUser from "./components/NewUser/NewUser";
 import "./App.css";
 import { ToastProvider } from "react-toast-notifications";
+import ParticlesBg from "particles-bg";
+
 function App() {
   const [{ user }, dispatch] = useStateValue();
 
@@ -26,12 +28,15 @@ function App() {
             <Switch>
               <Route path="/signin">
                 <SignInWithGymMate />
+                <ParticlesBg type="lines" bg={true} />
               </Route>
               <Route path="/signup">
                 <Registration />
+                <ParticlesBg type="lines" bg={true} />
               </Route>
               <Route path="/">
                 <Login />
+                <ParticlesBg type="lines" bg={true} />
               </Route>
             </Switch>
           </Router>
