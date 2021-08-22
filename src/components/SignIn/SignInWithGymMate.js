@@ -1,21 +1,16 @@
 import React, { useState } from "react";
-import { ToastProvider, useToasts } from "react-toast-notifications";
+import { useToasts } from "react-toast-notifications";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { useStateValue } from "../../StateProvider";
 import firebase from "firebase";
 import database from "../../firebase";
-import SaveIcon from "@material-ui/icons/Save";
 import Box from "@material-ui/core/Box";
-import CardContent from "@material-ui/core/CardContent";
-import Fab from "@material-ui/core/Fab";
-import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
+
 import { Redirect } from "react-router-dom";
 
-import { auth } from "../../firebase";
-import { provider } from "../../firebase";
 import { actionTypes } from "../../reducer";
-import { emphasize, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import "./SignInWithGymMate.css";
 
@@ -147,13 +142,6 @@ function SignInWithGymMate() {
                     let matches = new Set(
                       [...profilesLiked].filter((x) => profilesLikedMe.has(x))
                     );
-
-                    // console.log(
-                    //   profilesDisliked,
-                    //   profilesLiked,
-                    //   profilesLikedMe,
-                    //   profilesRemoved
-                    // );
                     dispatch({
                       type: actionTypes.SET_LIKES,
                       likes: profilesLiked,

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import clsx from "clsx";
 import { ToastProvider, useToasts } from "react-toast-notifications";
-import { BrowserRouter } from "react-router-dom";
 import { Redirect } from "react-router";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -20,7 +18,6 @@ import FormControl from "@material-ui/core/FormControl";
 import ListItemText from "@material-ui/core/ListItemText";
 import Select from "@material-ui/core/Select";
 import Checkbox from "@material-ui/core/Checkbox";
-import Chip from "@material-ui/core/Chip";
 
 import { Box } from "@material-ui/core";
 import { Link } from "react-router-dom";

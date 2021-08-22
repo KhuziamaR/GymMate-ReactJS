@@ -100,9 +100,6 @@ function SwipeButtons() {
 
   return (
     <div className="swipeButtons">
-      {/* <IconButton className="swipeButtons__repeat" style={styleForButton}>
-        <ReplayIcon fontSize="large" />
-      </IconButton> */}
       <IconButton
         className="swipeButtons__left"
         style={styleForButton}
@@ -124,9 +121,6 @@ function SwipeButtons() {
       >
         <FavoriteIcon fontSize="large" />
       </IconButton>
-      {/* <IconButton className="swipeButtons_lightning" style={styleForButton}>
-        <FlashOnIcon fontSize="large" />
-      </IconButton> */}
     </div>
   );
 }

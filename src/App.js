@@ -67,12 +67,7 @@ function App() {
               </Route>
               <Route path="/">
                 <Header />
-                <GymMateCards
-                // alreadyLiked={profilesLiked}
-                // alreadyDisliked={profilesDisliked}
-                // alreadyLikedMe={profilesLikedMe}
-                // alreadyRemoved={profilesRemoved}
-                />
+                <GymMateCards />
                 <SwipeButtons />
               </Route>
             </Switch>
@@ -84,19 +79,3 @@ function App() {
 }
 
 export default App;
-{
-  /* Header  */
-}
-{
-  /* Gym Mate Card */
-}
-{
-  /* Buttons below card */
-}
-
-{
-  /* Chat View */
-}
-{
-  /* individual chat views */
-}

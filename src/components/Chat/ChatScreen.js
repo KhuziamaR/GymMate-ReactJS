@@ -54,24 +54,6 @@ function ChatScreen() {
     setInput("");
   };
 
-  // useEffect(() => {
-  //   const unsubscribe = database
-  //     .collection("allchats")
-  //     .doc(user.uid)
-  //     .collection("chats")
-  //     .doc(personUid)
-  //     .collection("messages")
-  //     .onSnapshot((snapshot) =>
-  //       setMessages(snapshot.docs.map((doc) => doc.data()))
-  //     );
-  //   return () => {
-  //     // cleanup
-  //     unsubscribe();
-  //   };
-  // }, []);
-
-  useEffect(() => {}, []);
-
   return (
     <div className="chatScreen">
       <p className="chatScreen__timeStamp">

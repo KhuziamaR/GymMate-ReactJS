@@ -313,12 +313,6 @@ const NewUser = () => {
                                     )
                                   );
 
-                                  // console.log(
-                                  //   profilesDisliked,
-                                  //   profilesLiked,
-                                  //   profilesLikedMe,
-                                  //   profilesRemoved
-                                  // );
                                   dispatch({
                                     type: actionTypes.SET_LIKES,
                                     likes: profilesLiked,
@@ -345,67 +339,7 @@ const NewUser = () => {
 
                             setRedirect(true);
                           })
-                          // .then(() => {
-                          //   database
-                          //     .collection("people")
-                          //     .doc(user.uid)
-                          //     .collection("profilesLiked")
-                          //     .doc("uid")
-                          //     .set({
-                          //       name: "TEST PROFILE LIKED IGNORE THIS",
-                          //       cardImgUrl: cardImgUrl,
-                          //       uid: "person i liked uid",
-                          //     })
-                          //     .then(() => {
-                          //       database
-                          //         .collection("people")
-                          //         .doc(user.uid)
-                          //         .collection("profilesLikedMe")
-                          //         .doc("uid")
-                          //         .set({
-                          //           name: "TEST PROFILE LIKED IGNORE THIS",
-                          //           cardImgUrl: cardImgUrl,
-                          //           uid: "person liked me uid",
-                          //         })
-                          //         .then(
-                          //           database
-                          //             .collection("people")
-                          //             .doc(user.uid)
-                          //             .collection("matches")
-                          //             .doc("uid")
-                          //             .set({
-                          //               name: "TEST MATCHES IGNORE THIS",
-                          //               cardImgUrl: cardImgUrl,
-                          //               uid: "person I MATCHED WITH",
-                          //             })
-                          //             .then(
-                          //               database
-                          //                 .collection("people")
-                          //                 .doc(user.uid)
-                          //                 .collection("dislikes")
-                          //                 .doc("uid")
-                          //                 .set({
-                          //                   name: "TEST DISLIKES IGNORE THIS",
-                          //                   cardImgUrl: cardImgUrl,
-                          //                   uid: "person I DISLIKED",
-                          //                 })
-                          //             )
-                          //             .then(() => {
-                          //               addToast(
-                          //                 "Profile Updated Successfully",
-                          //                 {
-                          //                   appearance: "success",
-                          //                 }
-                          //               );
-                          //               dispatch({
-                          //                 type: actionTypes.SET_USER,
-                          //                 user: user,
-                          //               });
-                          //               setRedirect(true);
-                          //             })
-                          //         );
-                          //     });
-                          // })
+
                           .catch((error) => {
                             addToast(error.message, { appearance: "error" });
                           });

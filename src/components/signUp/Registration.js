@@ -10,7 +10,7 @@ import { Redirect } from "react-router-dom";
 import { actionTypes } from "../../reducer";
 import { makeStyles } from "@material-ui/core";
 import { Link } from "react-router-dom";
-// import logo from "../../assets/logo.png";
+
 import "./Registration.css";
 
 const useStyles = makeStyles((theme) => ({

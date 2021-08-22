@@ -3,8 +3,6 @@ import PersonIcon from "@material-ui/icons/Person";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import "./Header.css";
 import logo from "../../assets/logo.png";
-// import logo from "../../assets/logo.jpg";
-
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { Icon } from "@material-ui/core";
