@@ -39,9 +39,15 @@
 }
 .card > span {
   /* border: 2px solid #e75480; */
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 20px;
+  /* background-color: rgba(0, 0, 0, 0.8); */
+  /* border-radius: 20px; */
 }
 #card__username {
   color: white;
+}
+.outter {
+  /* width: 100vh;
+  height: 100vh;
+  background-color: ; */
+  background-color: white;
 }

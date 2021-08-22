@@ -15,8 +15,8 @@ const Header = ({ backButton }) => {
   return (
     <div className="header">
       {backButton ? (
-        <Link>
-          <IconButton onClick={() => history.replace(backButton)}>
+        <Link to={backButton}>
+          <IconButton>
             <ArrowBackIosIcon fontSize="large" className="iconButton" />
           </IconButton>
         </Link>

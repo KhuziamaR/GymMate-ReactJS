@@ -3,12 +3,14 @@ import Chat from "./Chat";
 import database from "../../firebase";
 import { useStateValue } from "../../StateProvider";
 import "./Chats.css";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 function Chats() {
   const [{ user, likes, matches, likesme, dislikes }, dispatch] =
     useStateValue();
   const [chatMatches, setChatMatches] = useState([]);
-
+  const lastMessages = [];
   useEffect(() => {
     // console.log(chatMatches);
     const unsubscribe = database.collection("people").onSnapshot((snapshot) =>
@@ -25,49 +27,61 @@ function Chats() {
       unsubscribe();
     };
   }, []);
+  // useEffect(() => {
+  //   chatMatches.map((person) => {
+  //     getLast(person);
+  //     console.log();
+  //   });
+  // }, [chatMatches]);
 
+  // const getLast = (uid) => {
+  //   const query = database
+  //     .collection("allchats")
+  //     .doc(user.uid)
+  //     .collection("chats")
+  //     .doc(uid)
+  //     .collection("messages")
+  //     .orderBy("createdAt", "desc")
+  //     .limit(1);
+  //   return query.get().then((doc) => {
+  //     if (doc.exists) {
+  //       var last = doc.docs[doc.docs.length - 1];
+  //       //   var element = {
+  //       //     uid: {
+  //       //       text: last.data().text,
+  //       //       timeStamp: last.data().createdAt,
+  //       //     },
+  //       //   };
+  //       //   lastMessages.push(element);
+  //       // }
+  //       console.log("last", last.data().text, last.data().createdAt);
+  //     }
+  //   });
+  // };
+  function randomIntFromInterval(min, max) {
+    // min and max included
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
   return (
     <div className="chats">
-      {
-        chatMatches
-          ? chatMatches.map((person) => {
-              {
-                if (person != null && person != undefined) {
-                  return (
-                    <Chat
-                      key={person.uid}
-                      personUid={person.uid}
-                      name={person.username}
-                      message="Ball at 6?"
-                      timeStamp="42 minutes ago"
-                      profilePic={person.profileImgUrl}
-                    />
-                  );
-                }
+      {chatMatches
+        ? chatMatches.map((person) => {
+            {
+              if (person != null && person != undefined) {
+                return (
+                  <Chat
+                    key={person.uid}
+                    personUid={person.uid}
+                    name={person.username}
+                    message={`I'm ${person.username}, nice to meet you`}
+                    timeStamp={`${randomIntFromInterval(1, 60)} minutes ago`}
+                    profilePic={person.profileImgUrl}
+                  />
+                );
               }
-            })
-          : null
-        //   return(
-        // <Chat
-        //   name="Mark"
-        //   message="Ball at 6?"
-        //   timeStamp="42 minutes ago"
-        //   profilePic="..."
-        // />
-        // <Chat
-        //   name="Jen"
-        //   message="whats up dude!"
-        //   timeStamp="40 seconds ago"
-        //   profilePic="..."
-        // />
-        // <Chat
-        //   name="Sam"
-        //   message="Hey bro"
-        //   timeStamp="30 minutes ago"
-        //   profilePic="..."
-        // />
-        // )
-      }
+            }
+          })
+        : null}
     </div>
   );
 }

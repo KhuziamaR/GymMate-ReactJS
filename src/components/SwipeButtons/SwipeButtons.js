@@ -86,6 +86,7 @@ function SwipeButtons() {
         )
       )
       .then(() => {
+        addToast("New Matches!", { appearance: "success" });
         var match = new Set([...likes].filter((x) => likesme.has(x)));
         if (match.size > 0) {
           dispatch({

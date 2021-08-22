@@ -166,7 +166,7 @@ const GymMateCards = () => {
   // };
 
   return (
-    <div>
+    <div className="outter">
       <div className="gymmateCards__cardContainer">
         {[...people].map((person, index) => {
           if (
@@ -200,6 +200,10 @@ const GymMateCards = () => {
                   <div className="card__detailsSports">
                     <b>Sports: </b>
                     {person.sports.map((sport) => sport + " ")}
+                  </div>
+                  <div className="card__detailsBio">
+                    <b>Age: </b>
+                    {person.age}
                   </div>
                 </div>
               </TinderCard>
