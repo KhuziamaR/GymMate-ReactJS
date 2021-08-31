@@ -170,6 +170,7 @@ const GymMateCards = () => {
       <div className="gymmateCards__cardContainer">
         {[...people].map((person, index) => {
           if (
+            person &&
             person.uid != user.uid &&
             !likes.has(person.uid) &&
             !dislikes.has(person.uid) &&

@@ -230,7 +230,7 @@ function Login() {
         <div className="login__text">
           <h1>Welcome to Gym Mate</h1>
         </div>
-        <Container component="main" maxWidth="s">
+        <Container component="main" maxWidth="sm">
           <CssBaseline />
           <div className={classes.paper}>
             {!matches ? (
